@@ -108,6 +108,8 @@ class FirstTableViewController: UITableViewController {
         
         controller.tempStringOutName = arrayOfStrings[indexPath.row]["name"]!
         controller.tempStringOutCheck =  arrayOfStrings[indexPath.row]["checked"]!
+        controller.outFileInformation = arrayOfStrings
+        controller.indexOfRow = indexPath.row
         controller.editingExRow = true
         self.navigationController?.pushViewController(controller, animated: true)
     }

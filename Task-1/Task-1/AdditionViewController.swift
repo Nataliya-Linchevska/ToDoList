@@ -14,6 +14,7 @@ class AdditionViewController: UIViewController {
     @IBOutlet weak var switchDone: UISwitch!
     var tempStringOutName = ""
     var tempStringOutCheck = "true"
+    var indexOfRow = 0
     var editingExRow = false
     
     var outFileInformation = [[String : String]]() //для запису в файл
@@ -38,6 +39,7 @@ class AdditionViewController: UIViewController {
     
     @IBAction func btnSave(_ sender: UIBarButtonItem) {
         
+        if editingExRow == false {
         // Спочатку зчитую з файлу, щоб не видаляло після перезапуску програми
             let file = "someFile.json" //this is the file. we will write to and read from it
             if let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
@@ -52,15 +54,23 @@ class AdditionViewController: UIViewController {
                     } catch {print(error)}
                 }
             }
-        outFileInformation += arrayOfStrings
-            // Записую дані в файл
+            outFileInformation += arrayOfStrings
             let validDictionary = [
                 "name": tvEnterInformation.text!,
                 "data": NSDate().description,
                 "checked": switchDone.isOn ? "true" : "false"
                 ] as [String : String]
             outFileInformation.append(validDictionary)
-            
+        } else {
+            outFileInformation[indexOfRow] = [
+                "name": tvEnterInformation.text!,
+                "data": NSDate().description,
+                "checked": switchDone.isOn ? "true" : "false"
+            ]
+        }
+        
+        
+        // Записую дані в файл
         if JSONSerialization.isValidJSONObject(outFileInformation) { // True
             do {
                 let rawData = try JSONSerialization.data(withJSONObject: outFileInformation, options: .prettyPrinted)
